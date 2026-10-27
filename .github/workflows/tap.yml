@@ -1,0 +1,45 @@
+# Tap CI on macos-latest (the formula is macOS-only):
+#   syntax  - `brew test-bot --only-tap-syntax` (style + audit). Static, no
+#             tarball download, safe on every push/PR.
+#   install - a real `brew install` from this checkout, then `--version` and
+#             `brew test`. The formula's `pip install` pulls dependencies from
+#             PyPI, so this is the only place that proves they still resolve.
+#             brew also verifies the tarball checksum, so a bad `sha256` fails.
+#
+# It triggers on pull_request, so the bump PR from bump-homebrew-formula-action
+# is install-tested before merge.
+name: tap
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: Homebrew/actions/setup-homebrew@master
+      - run: brew test-bot --only-tap-syntax
+
+  install:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: Homebrew/actions/setup-homebrew@master
+      # Homebrew rejects `install ./Formula/x.rb` ("formulae must be in a tap"),
+      # and `brew tap` by name would test the default branch, not this checkout.
+      # Pointing the tap directory at the checkout installs the proposed formula.
+      - run: |
+          tap_dir="$(brew --repository)/Library/Taps/khivi/homebrew-photos-cleanup"
+          rm -rf "$tap_dir"
+          mkdir -p "$(dirname "$tap_dir")"
+          ln -s "$GITHUB_WORKSPACE" "$tap_dir"
+          brew install --build-from-source khivi/photos-cleanup/photos-cleanup
+          photos-cleanup --version
+          # `brew install` does not run the formula's `test do` block.
+          brew test khivi/photos-cleanup/photos-cleanup
