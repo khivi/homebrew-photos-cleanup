@@ -4,13 +4,12 @@
 # Update:   brew upgrade photos-cleanup
 #
 # `url` + `sha256` are bumped by the photos-cleanup repo's publish workflow on
-# every `v*` tag. `url` and `sha256` below are placeholders until the first release.
+# every `v*` tag.
 class PhotosCleanup < Formula
   desc "Review and clear unwanted photos in the macOS Photos library"
   homepage "https://github.com/khivi/photos-cleanup"
-  # Placeholder hashed URL; the publish workflow replaces it with the real one.
-  url "https://files.pythonhosted.org/packages/00/00/000000000000000000000000000000000000000000000000000000000000/macos_photos_cleanup-0.1.0.tar.gz"
-  sha256 "0000000000000000000000000000000000000000000000000000000000000000"
+  url "https://files.pythonhosted.org/packages/8a/57/e74ed575f7400d03d30efe5e28b36e064d8cf2b85265e29a285f08dfe2ce/macos_photos_cleanup-0.1.0.tar.gz"
+  sha256 "7f7116f5acb71d109ee61a6d5aee71cfbf6f34cee35204781ce88f7bf1f67b9d"
   license "MIT"
 
   depends_on :macos
