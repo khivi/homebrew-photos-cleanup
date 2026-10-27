@@ -6,8 +6,8 @@
 #             PyPI, so this is the only place that proves they still resolve.
 #             brew also verifies the tarball checksum, so a bad `sha256` fails.
 #
-# It triggers on pull_request, so the bump PR from bump-homebrew-formula-action
-# is install-tested before merge.
+# The publish workflow commits version bumps straight to main (no PR), so the
+# push trigger is what install-tests each release.
 name: tap
 on: [push, pull_request]
 
@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: Homebrew/actions/setup-homebrew@master
+      - uses: Homebrew/actions/setup-homebrew@3cdb78d0f62ad29dd32de765782654f4eedea607 # 2026.08.31.1
       - run: brew test-bot --only-tap-syntax
 
   install:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: Homebrew/actions/setup-homebrew@master
+      - uses: Homebrew/actions/setup-homebrew@3cdb78d0f62ad29dd32de765782654f4eedea607 # 2026.08.31.1
       # Homebrew rejects `install ./Formula/x.rb` ("formulae must be in a tap"),
       # and `brew tap` by name would test the default branch, not this checkout.
       # Pointing the tap directory at the checkout installs the proposed formula.
