@@ -8,8 +8,8 @@
 class PhotosCleanup < Formula
   desc "Review and clear unwanted photos in the macOS Photos library"
   homepage "https://github.com/khivi/photos-cleanup"
-  url "https://github.com/khivi/photos-cleanup/releases/download/v0.3.0/photos-cleanup-0.3.0-macos-universal.tar.gz"
-  sha256 "e319556042b96c0d37c6684d1653824df7c17ae0e934ee2f17c641a45c953cec"
+  url "https://github.com/khivi/photos-cleanup/releases/download/v0.3.1/photos-cleanup-0.3.1-macos-universal.tar.gz"
+  sha256 "acb8550ca021f3eef52e6cb647845dc5e386a4a5ec506c217e799a13ae59a430"
   license "MIT"
 
   # Package.swift: platforms: [.macOS(.v15)]. AI verdicts additionally need
