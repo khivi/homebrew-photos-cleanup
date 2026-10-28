@@ -12,15 +12,13 @@ class PhotosCleanup < Formula
   sha256 "e319556042b96c0d37c6684d1653824df7c17ae0e934ee2f17c641a45c953cec"
   license "MIT"
 
-  depends_on :macos
-  # Package.swift: platforms: [.macOS(.v15)]. The FoundationModels judge may
-  # need newer; see uncertainty 3 in swift-release-draft.md.
+  # Package.swift: platforms: [.macOS(.v15)]. AI verdicts additionally need
+  # macOS 27 with Apple Intelligence; on older systems the app says so and runs.
   depends_on macos: :sequoia
 
   def install
-    # Keep the binary and the SwiftPM resource bundle side by side: the
-    # generated Bundle.module looks for photos-cleanup_PhotosCleanup.bundle
-    # next to the executable.
+    # The binary finds its resource bundles (the UI, and SwiftNIO's) beside
+    # itself, so keep them together in libexec.
     libexec.install "photos-cleanup", *Dir["*.bundle"]
     # A wrapper that execs the real libexec path (not a symlink), so
     # Bundle.main resolves to libexec rather than bin.
@@ -29,8 +27,9 @@ class PhotosCleanup < Formula
 
   def caveats
     <<~EOS
-      Grant Full Disk Access to your terminal (System Settings > Privacy &
-      Security > Full Disk Access) so photos-cleanup can read the Photos library.
+      On first run, macOS asks to let your terminal access your Photos.
+      Choose Allow Full Access. To change it later: System Settings >
+      Privacy & Security > Photos.
     EOS
   end
 
