@@ -1,12 +1,10 @@
-# Tap CI on macos-latest (the formula is macOS-only):
+# Tap CI on macos-latest (the cask is macOS-only):
 #   syntax  - `brew test-bot --only-tap-syntax` (style + audit). Static, no
-#             tarball download, safe on every push/PR.
-#   install - a real `brew install` from this checkout, then `--version` and
-#             `brew test`. The formula's `pip install` pulls dependencies from
-#             PyPI, so this is the only place that proves they still resolve.
-#             brew also verifies the tarball checksum, so a bad `sha256` fails.
+#             download, safe on every push/PR.
+#   install - a real `brew install --cask` from this checkout: brew downloads
+#             the release zip and verifies its sha256, so a bad checksum fails.
 #
-# The publish workflow commits version bumps straight to main (no PR), so the
+# The release workflow commits each new cask straight to main (no PR), so the
 # push trigger is what install-tests each release.
 name: tap
 on: [push, pull_request]
@@ -31,15 +29,13 @@ jobs:
         with:
           persist-credentials: false
       - uses: Homebrew/actions/setup-homebrew@3cdb78d0f62ad29dd32de765782654f4eedea607 # 2026.08.31.1
-      # Homebrew rejects `install ./Formula/x.rb` ("formulae must be in a tap"),
-      # and `brew tap` by name would test the default branch, not this checkout.
-      # Pointing the tap directory at the checkout installs the proposed formula.
+      # `brew tap` by name would test the default branch, not this checkout.
+      # Pointing the tap directory at the checkout installs the proposed cask.
       - run: |
           tap_dir="$(brew --repository)/Library/Taps/khivi/homebrew-photos-cleanup"
           rm -rf "$tap_dir"
           mkdir -p "$(dirname "$tap_dir")"
           ln -s "$GITHUB_WORKSPACE" "$tap_dir"
-          brew install --build-from-source khivi/photos-cleanup/photos-cleanup
-          photos-cleanup --version
-          # `brew install` does not run the formula's `test do` block.
-          brew test khivi/photos-cleanup/photos-cleanup
+          brew install --cask khivi/photos-cleanup/photos-cleanup
+          test -d "/Applications/Photos Cleanup.app"
+          spctl -a -vv "/Applications/Photos Cleanup.app"
