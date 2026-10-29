@@ -6,7 +6,7 @@ cask "photos-cleanup" do
 
   url "https://github.com/khivi/photos-cleanup/releases/download/v#{version}/Photos-Cleanup-#{version}.zip"
   name "Photos Cleanup"
-  desc "Review and clear unwanted photos in the macOS Photos library"
+  desc "Review and clear unwanted photos in the Photos library"
   homepage "https://github.com/khivi/photos-cleanup"
 
   depends_on macos: :sequoia
