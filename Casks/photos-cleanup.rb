@@ -9,7 +9,7 @@ cask "photos-cleanup" do
   desc "Review and clear unwanted photos in the macOS Photos library"
   homepage "https://github.com/khivi/photos-cleanup"
 
-  depends_on macos: ">= :sequoia"
+  depends_on macos: :sequoia
 
   app "Photos Cleanup.app"
 
