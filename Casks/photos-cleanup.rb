@@ -1,8 +1,8 @@
 # Homebrew cask for Photos Cleanup. Written by the release workflow in
 # khivi/photos-cleanup on every release; don't edit it here.
 cask "photos-cleanup" do
-  version "0.5.1"
-  sha256 "4d58665e311385984389bb4e33b1d8e6de6151d32e05cf1e93b2b860c1f3c49b"
+  version "0.6.0"
+  sha256 "33d8535d504dfa8f33c6aaa17ecb4414e88225a28530695fd6749567e8397f30"
 
   url "https://github.com/khivi/photos-cleanup/releases/download/v#{version}/Photos-Cleanup-#{version}.zip"
   name "Photos Cleanup"
